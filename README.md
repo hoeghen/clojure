@@ -1,10 +1,6 @@
-# shopgun
+# shopgun backend - clojure 2019    
 
-FIXME: description
-
-## Installation
-
-Download from http://example.com/FIXME.
+A clojure based backend to load from shopgun to firebase
 
 ## Usage
 
