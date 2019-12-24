@@ -6,8 +6,8 @@
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [clj-http "3.10.0"]
                  [cheshire "5.9.0"]
-                 [pandect "0.6.1"]
-                 ]
-  :main ^:skip-aot shopgun.core
+                 [pandect "0.6.1"]]
+
+  :main ^:skip-aot shopgun.main
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})

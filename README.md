@@ -1,6 +1,6 @@
-# shopgun backend - clojure 2019    
+# minlokalebutik backend - clojure 2019    
 
-A clojure based gateway to load from shopgun to firebase
+A clojure based gateway to load from minlokalebutik to firebase
 Also it provides cleaning of the firebase
 
 
@@ -8,5 +8,5 @@ Also it provides cleaning of the firebase
 
 FIXME: explanation
 
-    $ java -jar shopgun-0.1.0-standalone.jar [args]
+    $ java -jar minlokalebutik-0.1.0-standalone.jar [args]
 

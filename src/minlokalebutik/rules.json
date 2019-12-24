@@ -1,0 +1,15 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": true
+  },
+  "structure": {
+    "alletilbud": {
+      ".indexOn": [
+        "id",
+        "type"
+      ]
+    }
+  }
+}
+
