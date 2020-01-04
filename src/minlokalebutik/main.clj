@@ -7,10 +7,11 @@
 
 (defn -main
   [& args]
-  (println "calling shopgun and returning all offers in a postcode")
+  (println "loading....")
   ;; load tilbud fra idag
   (map postTilbud (load-all-today))
 
+  (println "deleting----")
   (delete-tilbud-before (.toString (today))))
 
 

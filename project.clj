@@ -8,6 +8,6 @@
                  [cheshire "5.9.0"]
                  [pandect "0.6.1"]]
 
-  :main ^:skip-aot shopgun.main
+  :main ^:skip-aot minlokalebutik.main
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})

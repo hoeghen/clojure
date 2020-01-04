@@ -14,7 +14,7 @@
 
 (defn load-tilbud [parms]
   (parse-string (:body (client/get (str "https://minlokalebutik.firebaseio.com/alletilbud.json" ) {:query-params parms
-                                                                                                   :debug true}))))
+                                                                                                   :debug false}))))
 
 (defn load-tilbud-before [date]
   (let [earlier {:orderBy "\"slut\""
@@ -23,12 +23,20 @@
 
 
 (defn delete-tilbud [key]
-  (client/delete (str "https://minlokalebutik.firebaseio.com/alletilbud/" key ".json") {:debug true}))
+  (client/delete (str "https://minlokalebutik.firebaseio.com/alletilbud/" key ".json") {:debug false}))
 
 
 
 (defn delete-tilbud-before [date]
-  (map delete-tilbud (keys (load-tilbud-before date))))
+  (let [k (keys (load-tilbud-before date))
+        c (count k)]
+    (println "delete " c " tilbud that ends on " date  " from firebase")
+    (map delete-tilbud k)))
+
+
+
+
+
 
 
 

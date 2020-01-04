@@ -1,4 +1,4 @@
-(ns first.core-test
+(ns main-test
   (:require [clojure.test :refer :all]
             [first.core :refer :all]))
 
