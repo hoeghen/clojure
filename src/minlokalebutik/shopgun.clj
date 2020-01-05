@@ -1,76 +1,12 @@
 (ns minlokalebutik.shopgun
-  (:require [clj-http.client :as client])
   (:require [clojure.set :as set])
-  (:require [cheshire.core :refer :all])
   (:require [clojure.string :as str])
-  (:require [pandect.algo.sha256 :refer :all])
   (:require [clojure.pprint :refer [pprint print-table]])
-  (:require [minlokalebutik.time :refer :all]))
+  (:require [minlokalebutik.time :as time])
+  (:require [minlokalebutik.shopgun-clj :refer :all]))
 
-
-
-
-
-(def api-key "00ix2uliu8y2tobx8rowrshxwtr03g2b")
-(def api-secret "00ix2uliu8w70qfdrafwhe4f1vukngas")
-(def api-path "https://api.etilbudsavis.dk/v2")
 (def page-size 100)
 (def locations {:dragør {:r_lat 55.591173 :r_lng 12.658146 :r_radius 10000}})
-
-
-
-
-(defn make-signature [token]
-  (sha256 (str api-secret token)))
-
-
-(defn dopost [endpoint form]
-  (let [
-        url (str api-path "/" endpoint)
-        parms {:form-params  form
-               :content-type :json}]
-    (client/post url parms)))
-
-
-(defn get-token []
-  (->
-    (dopost "sessions" {:api_key api-key})
-    (select-keys [:body])
-    (:body)
-    (parse-string true)
-    (:token)))
-
-(defn init []
-  "initialise a map with secret and token"
-  (let [
-        tok (get-token)
-        sig (make-signature tok)]
-
-    (assoc {} :_token tok :_signature sig)))
-
-
-
-(defn doget [endpoint query]
-  (let [
-        parms {:form-params  (init)
-               :content-type :json
-               :debug        false
-               :query-params (merge query {:order_by "-created"})}
-        url (str api-path "/" endpoint)]
-    (client/get url parms)))
-
-
-(defn extract-store [m]
-  (let [
-        {{country :id} :country
-         {name :name}  :branding
-         :keys         [city street longitude latitude zip_code id]} m]
-
-    {:id   id :navn name
-     :adresse (str  street "," zip_code " " city " " country)
-     :position {:lng longitude :lat latitude}
-     :postnummer zip_code}))
-
 
 (defn extract-offer [m]
   (let [
@@ -83,6 +19,18 @@
      :store_id store_id :billede1 billede :publish publish}))
 
 
+(defn extract-store [m]
+  (let [
+        {{country :id} :country
+         {name :name}  :branding
+         :keys         [city street longitude latitude zip_code id]} m]
+
+    {:id         id :navn name
+     :adresse    (str street "," zip_code " " city " " country)
+     :position   {:lng longitude :lat latitude}
+     :postnummer zip_code}))
+
+
 (defn paging [offset query]
   (if-not (nil? offset)
     (merge {:offset offset
@@ -93,7 +41,7 @@
   [endpoint city query offset]
   (-> (doget endpoint (merge query (paging offset (locations city))))
       (:body)
-      (parse-string true)))
+      (parse)))
 
 (defn until-empty [f]
   (loop [
@@ -109,10 +57,10 @@
       r)))
 
 (defn get-all [endpoint offset]
-  (map extract-offer (mapcat #(get-for-city "offers" % {} offset) (keys locations))))
+  (map extract-offer (mapcat #(get-for-city endpoint % {} offset) (keys locations))))
 
 (defn get-store [id]
-  (extract-store (first (parse-string (:body (doget "stores" {:store_id id})) true))))
+  (extract-store (first (parse(:body (doget "stores" {:store_id id}))))))
 
 (def get-store-memoized
   (memoize get-store))
@@ -122,14 +70,14 @@
 
 
 (defn load-offers_after [limit-date offset]
-  (filter #(after? (parse (:publish %)) limit-date ) (map add-store (get-all "offers" offset))))
+  (filter #(time/after? (time/parse (:publish %)) limit-date ) (map add-store (get-all "offers" offset))))
 
 
 (defn load-all-after [date]
   (set (until-empty (partial load-offers_after date))))
 
 (defn load-all-today []
-  (load-all-after (today)))
+  (load-all-after (time/today)))
 
 
 

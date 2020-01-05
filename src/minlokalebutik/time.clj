@@ -12,9 +12,6 @@
 (defn week-ago []
   (.minusDays (today) 7))
 
-(defn week-ago []
-  (.minusDays (today) 7))
-
 
 (defn this-week? [date]
   (.isBefore (week-ago) date))

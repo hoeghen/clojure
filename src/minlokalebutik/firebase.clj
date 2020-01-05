@@ -30,7 +30,7 @@
 (defn delete-tilbud-before [date]
   (let [k (keys (load-tilbud-before date))
         c (count k)]
-    (println "delete " c " tilbud that ends on " date  " from firebase")
+    (println "deleting " c " tilbud that ends on " date  " from firebase")
     (map delete-tilbud k)))
 
 
