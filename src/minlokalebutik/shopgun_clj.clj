@@ -18,7 +18,7 @@
         url (str api-path "/" endpoint)
         parms {:form-params  form
                :content-type :json
-               :debug true}]
+               :debug false}]
     (client/post url parms)))
 
 (defn get-token []
