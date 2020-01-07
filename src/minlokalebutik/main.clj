@@ -18,8 +18,6 @@
   (println "done"))
 
 
-
-(defn -main [& args])
-
-(println "hello")
+(defn -main [& args]
+  (println "hello"))
 
