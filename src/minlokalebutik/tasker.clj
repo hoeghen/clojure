@@ -20,15 +20,15 @@
         (if (not (= r nil))
           (do
             (fn r)
-            (<! (timeout 1000))
             (recur (<! channel)))
           (>! dc n))))
     dc))
 
 (defn wait-for-count [cnt ch]
   (dotimes [n cnt]
-    (println "finished " n)
-    (<!! ch)))
+    (<!! ch)
+    (println "finished task" (inc n) " out of " cnt)))
+
 
 
 (defn show [c]

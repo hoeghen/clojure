@@ -11,13 +11,14 @@
 
 (defn -handler
   []
-  (println "get latest from firebase")
+  (println "get latest offer from firebase")
   (def latest-date (load-last-published-offer))
   (println "latest date is " (.toString latest-date))
 
   (println "loading....")
 
   (def concurency 20)
+
 
   (def ch (put-sequence-on-channel (load-all-after latest-date)))
   (def out (execute-from-channel concurency ch postTilbud))

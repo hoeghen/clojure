@@ -4,6 +4,8 @@ A clojure based gateway to load from minlokalebutik to firebase
 Also it provides cleaning of the firebase
 
 ## Usage
+###code
+    https://github.com/hoeghen/shopgungateway
 
 ###build
     lein uberjar
