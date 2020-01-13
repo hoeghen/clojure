@@ -1,13 +1,18 @@
 (ns minlokalebutik.time
   (:import java.time.LocalDateTime)
   (:import java.time.LocalDate)
-  (:import java.time.format.DateTimeFormatter))
+  (:import java.time.format.DateTimeFormatter
+           (java.util Formatter$DateTime)
+           (java.time ZonedDateTime Instant OffsetDateTime)))
 
-(defn parse [string]
-  (.toLocalDate (LocalDateTime/parse string (DateTimeFormatter/ofPattern "yyyy-MM-dd'T'HH:mm:ssZ"))))
+(defn parseDateTimeString [string]
+  (LocalDateTime/parse string (DateTimeFormatter/ofPattern "yyyy-MM-dd'T'HH:mm:ssZ")))
+
+(defn parseDateString [string]
+  (.atTime (LocalDate/parse string) 0 0))
 
 (defn today []
-  (LocalDate/now))
+  (LocalDateTime/now))
 
 (defn week-ago []
   (.minusDays (today) 7))

@@ -8,6 +8,12 @@
 (def page-size 100)
 (def locations {:dragør {:r_lat 55.591173 :r_lng 12.658146 :r_radius 10000}})
 
+(defn extract-publish [s]
+  (sort (map #(first (vals (select-keys % [:publish])))
+             s)))
+
+
+
 (defn extract-offer [m]
   (let [
         {{price    :price
@@ -70,7 +76,7 @@
 
 
 (defn load-offers_after [limit-date offset]
-  (filter #(time/after? (time/parse (:publish %)) limit-date ) (map add-store (get-all "offers" offset))))
+  (filter #(time/after? (time/parseDateTimeString (:publish %)) limit-date) (map add-store (get-all "offers" offset))))
 
 
 (defn load-all-after [date]

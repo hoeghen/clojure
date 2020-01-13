@@ -6,7 +6,8 @@
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [clj-http "3.10.0"]
                  [cheshire "5.9.0"]
-                 [pandect "0.6.1"]]
+                 [pandect "0.6.1"]
+                 [org.clojure/core.async "0.6.532"]]
 
   :main ^:skip-aot minlokalebutik.main
   :target-path "target/%s"

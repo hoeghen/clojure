@@ -5,7 +5,8 @@
   (:require [clojure.string :as str])
   (:require [pandect.algo.sha256 :refer :all])
   (:require [clojure.pprint :refer [pprint print-table]])
-  (:require [minlokalebutik.time  :refer :all]))
+  (:require [minlokalebutik.time :refer :all]
+            [minlokalebutik.time :as time]))
 
 
 (defn postTilbud [tilbud]
@@ -21,8 +22,15 @@
                   :endAt (str "\"" date "\"")}]
     (load-tilbud earlier)))
 
+(defn load-last-published-offer
+  "henter det seneste tilbud fra firebase"
+  []
+  (let [newest {:orderBy "\"publish:\"" :limitToLast "1"}]
+    (time/parseDateTimeString (get (val (first (load-tilbud newest))) "publish"))))
+
 
 (defn delete-tilbud [key]
+  (println "deleting item "  key)
   (client/delete (str "https://minlokalebutik.firebaseio.com/alletilbud/" key ".json") {:debug false}))
 
 
@@ -31,7 +39,7 @@
   (let [k (keys (load-tilbud-before date))
         c (count k)]
     (println "deleting " c " tilbud that ends on " date  " from firebase")
-    (map delete-tilbud k)))
+    (dorun (map delete-tilbud k))))
 
 
 
