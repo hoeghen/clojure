@@ -22,7 +22,7 @@
   (.isBefore (week-ago) date))
 
 (defn after? [date limit-date]
-  (or (.isAfter date limit-date) (.isEqual date limit-date)))
+  (or (.isAfter date limit-date)))
 
 (defn before? [date limit-date]
   (or (.isBefore date limit-date) (.isEqual date limit-date)))
