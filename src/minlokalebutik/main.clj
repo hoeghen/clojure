@@ -13,7 +13,7 @@
   []
   (println "get latest from firebase")
   (def latest-date (load-last-published-offer))
-  (println "latest date is " latest-date)
+  (println "latest date is " (.toString latest-date))
 
   (println "loading....")
 
@@ -21,7 +21,6 @@
 
   (def ch (put-sequence-on-channel (load-all-after latest-date)))
   (def out (execute-from-channel concurency ch postTilbud))
-
 
   (println "deleting....")
   (delete-tilbud-before (.toString (today)))
